@@ -57,10 +57,14 @@ export default class ProjectsDialog extends Vue {
     this.projects = [];
     if (newVal) {
       this.isLoading = true;
-      const response = await this.apiClient.getProjects();
+      await this.loadProjects();
       this.isLoading = false;
-      this.projects = response.data;
     }
+  }
+
+  private async loadProjects(): Promise<void> {
+    const response = await this.apiClient.getProjects();
+    this.projects = response.data.sort((a: Project, b: Project) => a.created! - b.created!).reverse();
   }
 
   private handleOpen(project: Project) {
@@ -92,7 +96,10 @@ export default class ProjectsDialog extends Vue {
           cancelButtonText: 'İptal',
           type: 'warning',
       }).then(async () => {
-        const response = await this.apiClient.getProjects();
+        if (project.projectId) {
+          await this.apiClient.deleteProject(project.projectId);
+          await this.loadProjects();
+        }
       }).catch((_) => _);
   }
 }
