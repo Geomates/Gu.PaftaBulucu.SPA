@@ -27,7 +27,7 @@
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
     "@vue/cli-plugin-babel": "^3.11.0",
     "@vue/cli-plugin-typescript": "^3.11.0",
-    "@vue/cli-service": "^3.11.0",
+    "@vue/cli-service": "^4.4.1",
     "babel-plugin-component": "^1.1.1",
     "sass": "^1.23.3",
     "sass-loader": "^8.0.0",
