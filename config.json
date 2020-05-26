@@ -1,0 +1,8 @@
+{
+    "auth": {
+        "domain": "geomatik.eu.auth0.com",
+        "clientId": "uOyRvryq7ifqkIaEzupkjSWA-XY20njJ",
+        "audience": "https://api.geomatikuygulamalar.com"
+    },
+    "api_base_url": "https://pb.api.geomatik.xyz"
+}
