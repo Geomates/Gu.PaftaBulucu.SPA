@@ -32,7 +32,7 @@
               </small>
             </div>
             <div class="card-body p-1">
-              <FindByCoordinateWidget @onFind="querySheetByCoordinate" v-show="isCoordinateMode"/>
+              <FindByCoordinateWidget @onFind="querySheetByCoordinate" :scale="scale" v-show="isCoordinateMode"/>
               <FindByNameWidget @onFind="querySheetByName" v-show="!isCoordinateMode" :scale="scale"/>
             </div>
           </div>
