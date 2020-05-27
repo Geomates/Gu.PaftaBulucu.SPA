@@ -8,7 +8,7 @@
     <br/>Pafta adına göre arama
     <br/>Koordinata göre arama
     <br/>Sonuçları harita üzerinde görebilme
-    <br/>Birden fazla arama sonucunu aynı anda görebile
+    <br/>Birden fazla arama sonucunu aynı anda görebilme
     <br/>Aramaları proje olarak kaydedebilme
     <br/>ve her zaman ücretsiz!
     <br/><br/>

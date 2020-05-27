@@ -35,6 +35,6 @@ export default class AuthProvider {
   }
 
   public logout(): void {
-    this.auth0Client.logout();
+    this.auth0Client.logout({ returnTo: window.location.origin });
   }
 }
