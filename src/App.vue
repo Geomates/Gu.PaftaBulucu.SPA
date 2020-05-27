@@ -9,12 +9,18 @@
       <div class="navbar-nav ml-auto">
         <a href="#" class="nav-link" @click="showProjects = true" v-if="isAuthenticated">Projeler</a>
         <a href="#" class="nav-link" @click="authProvider.logout()" v-if="isAuthenticated">Çıkış</a>
-        <a href="#" class="nav-link" @click="login" v-if="!isAuthenticated">Oturum Aç</a>
+        <a href="#" class="nav-link" @click="login" v-if="!isAuthenticated && !isMobile">Oturum Aç</a>
       </div>
     </nav>
-    <div class="row justify-content-center h-100 pt-5">
+    <div class="row justify-content-center h-100 pt-5" v-if="!isMobile">
       <div class="col pt-2 pl-0 pr-0">
         <router-view/>
+      </div>
+    </div>
+    <div class="row h-100" v-else>
+      <div class="col-sm-12 my-auto text-center">
+        Maalesef uygulamamız mobil tarayıcı uyumlu değil.<br/>
+        Uygulamamızı <b>masaüstü tarayıcılar</b> ile kullanabilirsiniz.
       </div>
     </div>
     <ProjectsDialog :showDialog.sync="showProjects"/>
@@ -49,7 +55,7 @@ export default class App extends Vue {
     try {
       await this.authProvider.login();
     } catch (exception) {
-      if (exception.error_description) {
+      if (exception && exception.error === 'unauthorized' && exception.error_description) {
         Notification.error({
           title: 'Başarısız',
           message: exception.error_description,
@@ -67,6 +73,22 @@ export default class App extends Vue {
 
   private beforeDestroy(): void {
     eventHub.$off('login', this.updateUser);
+  }
+
+  get isMobile(): boolean {
+    const toMatch = [
+        /Android/i,
+        /webOS/i,
+        /iPhone/i,
+        /iPad/i,
+        /iPod/i,
+        /BlackBerry/i,
+        /Windows Phone/i,
+    ];
+
+    return toMatch.some((toMatchItem) => {
+        return navigator.userAgent.match(toMatchItem);
+    });
   }
 }
 </script>

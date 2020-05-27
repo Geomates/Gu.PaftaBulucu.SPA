@@ -79,7 +79,6 @@ export default class Map extends Vue {
   public scale: number = 100;
   private map?: L.Map;
   private isCoordinateMode: boolean = true;
-  private tileLayer?: L.TileLayer;
   private guRestApiClient = new GuApiRestClient();
   private cornerMarkerIcon: L.Icon = L.icon({
     iconUrl: 'plus.gif',
@@ -102,16 +101,44 @@ export default class Map extends Vue {
         this.querySheetByCoordinate(e.latlng.lat, e.latlng.lng, this.scale);
       },
     }).addTo(this.map);
-    this.tileLayer = L.tileLayer(
+
+    this.addBaseMaps();
+
+    this.map.on('mousemove', (e: L.LeafletMouseEvent) => {
+      this.coordinates = `${this.formatCoordinate(e.latlng.lat)}N ${this.formatCoordinate(e.latlng.lng)}E`;
+    });
+  }
+
+  private addBaseMaps(): void {
+    const googleLayer = L.tileLayer(
+      'https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+      {
+        maxZoom: 18,
+      },
+    );
+    googleLayer.addTo(this.map!);
+
+    const esriLayer = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      {
+        maxZoom: 17,
+      },
+    );
+    esriLayer.addTo(this.map!);
+
+    const cartoLayer = L.tileLayer(
       'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png',
       {
         maxZoom: 18,
       },
     );
-    this.tileLayer.addTo(this.map);
-    this.map.on('mousemove', (e: L.LeafletMouseEvent) => {
-      this.coordinates = `${this.formatCoordinate(e.latlng.lat)}N ${this.formatCoordinate(e.latlng.lng)}E`;
-    });
+    cartoLayer.addTo(this.map!);
+
+    L.control.layers({
+      'Google Imagery': googleLayer,
+      'Esri Imagery': esriLayer,
+      'CartoDB': cartoLayer,
+    }).addTo(this.map!);
   }
 
   private showSpinner(): void {
