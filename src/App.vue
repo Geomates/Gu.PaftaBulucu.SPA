@@ -19,7 +19,7 @@
     </div>
     <div class="row h-100" v-else>
       <div class="col-sm-12 my-auto text-center">
-        Maalesef uygulamamız mobil tarayıcı uyumlu değil.<br/>
+        Malesef uygulamamız mobil tarayıcılar ile uyumlu değil.<br/>
         Uygulamamızı <b>masaüstü tarayıcılar</b> ile kullanabilirsiniz.
       </div>
     </div>
