@@ -248,7 +248,7 @@ export default class Map extends Vue {
 
   private drawSheets(sheets: any[], scale: number) {
     for (const sheet of sheets) {
-      if (this.sheetLayers[sheet.name]) {
+      if (this.sheetLayers.findIndex((s) => s.sheet.name === sheet.name) > -1) {
         continue;
       }
       const layerGroup = new L.LayerGroup();
