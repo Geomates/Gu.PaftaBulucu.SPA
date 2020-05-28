@@ -117,7 +117,7 @@ export default class FindByNameWidget extends Vue {
                                        (Number(k.substring(1)) >= this.scale &&
                                         Number(k.substring(1)) !== 25 &&
                                         Number(k.substring(1)) !== 50))
-                        .filter((k) => (this.sheet[k] as string).length > 0).map((k) => this.sheet[k]).join('-');
+                        .filter((k) => this.sheet[k].toString().length > 0).map((k) => this.sheet[k]).join('-');
       this.$emit('onFind', sheet);
     }
 }
