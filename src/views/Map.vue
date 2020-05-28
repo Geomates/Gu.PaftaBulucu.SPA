@@ -318,7 +318,7 @@ export default class Map extends Vue {
       sheetLayer.sheet.name = sheet.name;
       sheetLayer.sheet.lat = lbLat + scaleRange / 2;
       sheetLayer.sheet.lng = lbLng + scaleRange / 2;
-      sheetLayer.sheet.scale = this.scale;
+      sheetLayer.sheet.scale = scale;
       sheetLayer.layerGroup = layerGroup;
       this.sheetLayers.push(sheetLayer);
     }

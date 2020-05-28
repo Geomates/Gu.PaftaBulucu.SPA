@@ -1,5 +1,5 @@
 <template>
-<el-dialog title="Hakkında" :visible.sync="show" width="30%">
+<el-dialog title="Hakkında" :visible.sync="show">
   <span>
     <img class="d-block mx-auto mb-3" src="@/assets/logo.png"/>
     Bu uygulama Geomates ekibi tarafından Geomatik Uygulamalar'ın bir bileşeni olarak yeni nesil teknolojiler kullanılarak açık kaynak kodlu geliştirilmiştir.

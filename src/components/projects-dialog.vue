@@ -1,5 +1,5 @@
 <template>
-<el-dialog title="Projeler" :visible.sync="show" width="30%">
+<el-dialog title="Projeler" :visible.sync="show">
   <span v-if="projects.length > 0 && !this.isLoading">
     <el-table :data="projects" style="width: 100%">
       <el-table-column prop="name" label="Proje Adı"></el-table-column>      

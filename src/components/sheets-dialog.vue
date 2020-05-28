@@ -1,5 +1,5 @@
 <template>
-<el-dialog title="Paftalar" :visible.sync="show" width="30%">
+<el-dialog title="Paftalar" :visible.sync="show">
   <span v-if="sheetLayers.length > 0">
     <el-table :data="sheetLayers" style="width: 100%">
       <el-table-column prop="sheet.name" label="Pafta Adı"></el-table-column>      
