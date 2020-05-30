@@ -5,6 +5,7 @@
       <router-link class="navbar-brand" to="/">Pafta Bulucu</router-link>
       <div class="navbar-nav">
         <a href="#" class="nav-link" @click="showAbout = true">Hakkında</a>
+        <a href="#" class="nav-link" @click="showSettings = true" v-if="isAuthenticated">Ayarlar</a>
       </div>
       <div class="navbar-nav ml-auto">
         <a href="#" class="nav-link" @click="showProjects = true" v-if="isAuthenticated">Projeler</a>
@@ -25,6 +26,7 @@
     </div>
     <ProjectsDialog :showDialog.sync="showProjects"/>
     <AboutDialog :showDialog.sync="showAbout"/>
+    <SettingsDialog :showDialog.sync="showSettings"/>
   </div>
 </template>
 
@@ -32,16 +34,18 @@
 import { Component, Vue } from 'vue-property-decorator';
 import ProjectsDialog from './components/projects-dialog.vue';
 import AboutDialog from './components/about-dialog.vue';
+import SettingsDialog from './components/settings-dialog.vue';
 import { eventHub } from '@/libraries/event-hub';
 import AuthProvider from '@/libraries/auth-provider';
 import { Notification } from 'element-ui';
 
 @Component({
-  components: { ProjectsDialog, AboutDialog },
+  components: { ProjectsDialog, AboutDialog, SettingsDialog },
 })
 export default class App extends Vue {
   private showProjects: boolean = false;
   private showAbout: boolean = false;
+  private showSettings: boolean = false;
   private authProvider: AuthProvider = new AuthProvider();
   private user: any;
   private isAuthenticated: boolean = false;

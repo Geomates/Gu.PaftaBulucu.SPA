@@ -70,6 +70,7 @@ import SheetLayer from '@/models/sheet-layer';
 import Project from '@/models/project';
 import SheetEntry from '../models/sheet-entry';
 import AuthProvider from '@/libraries/auth-provider';
+import UTMConversation from '@/libraries/utm-conversation';
 
 @Component({
   components: { FindByCoordinateWidget, FindByNameWidget, SheetsDialog },
@@ -204,6 +205,29 @@ export default class Map extends Vue {
     return `${degree}° ${(minute < 10 ? '0' : '') + minute}' ${second.toFixed(4)}''`;
   }
 
+  private getSheetCornerLabel(latitude: number, longitude: number): string {
+    const sheetCoordinateSettings = this.getSettings().sheetCorner;
+    let coordinateSystem = 'wgs84';
+    if (sheetCoordinateSettings) {
+      coordinateSystem = sheetCoordinateSettings.coordinateSystem;
+    }
+    switch (coordinateSystem) {
+      case 'utm':
+        const utmConversation = new UTMConversation();
+        const utmCoordinates = utmConversation.toUtm(latitude, longitude, sheetCoordinateSettings.utmSpan);
+        return `Sağa: ${Math.floor(utmCoordinates.easting)}m Yukarı: ${Math.floor(utmCoordinates.northing)}m`;
+      default:
+        return `${this.formatCoordinate(latitude)}N ${this.formatCoordinate(longitude)}E`;
+    }
+  }
+
+  private getSettings(): any {
+    const savedSetttings = localStorage.getItem('settings');
+    if (savedSetttings) {
+      return JSON.parse(savedSetttings);
+    }
+  }
+
   private async querySheetByCoordinate(latitude: number, longitude: number, scale: number): Promise<void> {
     if (!await this.authProvider.isAuthenticated()) {
       this.showLoginAlert();
@@ -299,19 +323,19 @@ export default class Map extends Vue {
         .addTo(layerGroup);
       L.marker([lbLat, lbLng], {
         icon: this.cornerMarkerIcon,
-        title: `${this.formatCoordinate(lbLat)}N ${this.formatCoordinate(lbLng)}E`,
+        title: this.getSheetCornerLabel(lbLat, lbLng),
       }).addTo(layerGroup);
       L.marker([lbLat + scaleRange, lbLng], {
         icon: this.cornerMarkerIcon,
-        title: `${this.formatCoordinate(lbLat + scaleRange)}N ${this.formatCoordinate(lbLng)}E`,
+        title: this.getSheetCornerLabel(lbLat + scaleRange, lbLng),
       }).addTo(layerGroup);
       L.marker([lbLat + scaleRange, lbLng + scaleRange], {
         icon: this.cornerMarkerIcon,
-        title: `${this.formatCoordinate(lbLat + scaleRange)}N ${this.formatCoordinate(lbLng + scaleRange)}E`,
+        title: this.getSheetCornerLabel(lbLat + scaleRange, lbLng + scaleRange),
       }).addTo(layerGroup);
       L.marker([lbLat, lbLng + scaleRange], {
         icon: this.cornerMarkerIcon,
-        title: `${this.formatCoordinate(lbLat)}N ${this.formatCoordinate(lbLng + scaleRange)}E`,
+        title: this.getSheetCornerLabel(lbLat, lbLng + scaleRange),
       }).addTo(layerGroup);
       layerGroup.addTo(this.map!);
       const sheetLayer = new SheetLayer();
