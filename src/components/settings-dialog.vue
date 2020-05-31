@@ -5,14 +5,14 @@
     <el-form class="mt-4" label-position="left" label-width="130px">
       <el-form-item label="Koordinat Sistemi: ">
         <el-radio-group v-model="settings.sheetCorner.coordinateSystem">
-          <el-radio-button label="wgs84">WGS-84</el-radio-button>
+          <el-radio-button label="wgs84">WGS-84\ITRF96</el-radio-button>
           <el-radio-button label="utm">UTM</el-radio-button>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="Dilim Genişliği: " v-show="settings.sheetCorner.coordinateSystem == 'utm'">
         <el-radio-group v-model="settings.sheetCorner.utmSpan">
-          <el-radio-button :label="6">6°</el-radio-button>
-          <el-radio-button :label="3">3°</el-radio-button>
+          <el-radio-button :label="6">UTM 6°</el-radio-button>
+          <el-radio-button :label="3">Transverse Mercator 3°</el-radio-button>
         </el-radio-group>
       </el-form-item>
     </el-form>

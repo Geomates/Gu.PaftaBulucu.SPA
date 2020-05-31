@@ -206,16 +206,16 @@ export default class Map extends Vue {
   }
 
   private getSheetCornerLabel(latitude: number, longitude: number): string {
-    const sheetCoordinateSettings = this.getSettings().sheetCorner;
+    const settings = this.getSettings();
     let coordinateSystem = 'wgs84';
-    if (sheetCoordinateSettings) {
-      coordinateSystem = sheetCoordinateSettings.coordinateSystem;
+    if (settings) {
+       coordinateSystem = settings.sheetCorner.coordinateSystem;
     }
     switch (coordinateSystem) {
       case 'utm':
         const utmConversation = new UTMConversation();
-        const utmCoordinates = utmConversation.toUtm(latitude, longitude, sheetCoordinateSettings.utmSpan);
-        return `Sağa: ${Math.floor(utmCoordinates.easting)}m Yukarı: ${Math.floor(utmCoordinates.northing)}m`;
+        const utmCoordinates = utmConversation.toUtm(latitude, longitude, settings.sheetCorner.utmSpan);
+        return `Sağa: ${utmCoordinates.easting.toFixed(2)}m Yukarı: ${utmCoordinates.northing.toFixed(2)}m`;
       default:
         return `${this.formatCoordinate(latitude)}N ${this.formatCoordinate(longitude)}E`;
     }
