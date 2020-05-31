@@ -65,14 +65,23 @@ export default class SheetsDialog extends Vue {
 
   private handleExport(type: string): void {
     const sheetsGeoJson: any = this.sheetLayers[0].layerGroup.toGeoJSON();
+    this.findAndSetPolygonName(sheetsGeoJson.features, this.sheetLayers[0].sheet.name);
     for (let i = 1; i < this.sheetLayers.length; i++) {
       const geojsonSheet: any = this.sheetLayers[i].layerGroup.toGeoJSON();
+      this.findAndSetPolygonName(geojsonSheet.features, this.sheetLayers[i].sheet.name);
       sheetsGeoJson.features.push(...geojsonSheet.features);
     }
     if (type === 'geojson') {
       this.download('GU-PaftaBulucu.json', JSON.stringify(sheetsGeoJson));
     } else {
       this.download('GU-PaftaBulucu.kml', tokml(sheetsGeoJson));
+    }
+  }
+
+  private findAndSetPolygonName(features: any, name: string): void {
+    const polygon = features.find((f: any) => f.geometry.type === 'Polygon');
+    if (polygon) {
+      polygon.properties.Name = name;
     }
   }
 
