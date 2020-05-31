@@ -42,10 +42,10 @@ L.Control.QueryCoordinatesTool = L.Control.extend({
         }
 
         this.map.on('click', this.options.handleClick, this);
-        this.map.on('click', this.toggleState, this);
 
         L.DomUtil.addClass(this.map._container,'leaflet-control-querycoordinates-active-map-icon');
     },
+
     setStateOff: function () {
         if (this.controlIcon)
         {

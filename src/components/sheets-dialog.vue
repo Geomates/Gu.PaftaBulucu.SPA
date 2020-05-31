@@ -22,7 +22,14 @@
     <span v-if="project.projectId" class="mr-3">
       Proje Adı: {{project.name}}
     </span>
-    <el-button v-if="project.projectId" @click="handleSaveWithNewName">Yeni İsimle Kaydet</el-button>
+    <el-button icon="el-icon-edit" v-if="project.projectId" @click="handleSaveWithNewName" class="mr-2"></el-button>
+    <el-dropdown v-if="sheetLayers.length > 0" split-button @command="handleExport" class="mr-2">
+      Dışarı Aktar
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command="kml">KML</el-dropdown-item>
+        <el-dropdown-item command="geojson">GeoJSON</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
     <el-button v-if="sheetLayers.length > 0" @click="handleSave">Kaydet</el-button>
   </span>
 </el-dialog>
@@ -30,10 +37,11 @@
 
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import { Dialog, Button, Table, TableColumn, MessageBox } from 'element-ui';
+import { Dialog, Button, Table, TableColumn, Dropdown, DropdownMenu, DropdownItem, MessageBox } from 'element-ui';
 import Project from '@/models/project';
 import SheetLayer from '../models/sheet-layer';
 import { MessageBoxInputData } from 'element-ui/types/message-box';
+import tokml from 'tokml';
 
 @Component({
   components: {
@@ -41,6 +49,9 @@ import { MessageBoxInputData } from 'element-ui/types/message-box';
     'el-button': Button,
     'el-table': Table,
     'el-table-column': TableColumn,
+    'el-dropdown': Dropdown,
+    'el-dropdown-menu': DropdownMenu,
+    'el-dropdown-item': DropdownItem,
   },
 })
 export default class SheetsDialog extends Vue {
@@ -48,8 +59,31 @@ export default class SheetsDialog extends Vue {
   @Prop({default: []}) private sheetLayers!: SheetLayer[];
   @Prop() private project!: Project;
 
-  private handleDelete(sheetLayer: SheetLayer) {
+  private handleDelete(sheetLayer: SheetLayer): void {
     this.$emit('delete', sheetLayer);
+  }
+
+  private handleExport(type: string): void {
+    const sheetsGeoJson: any = this.sheetLayers[0].layerGroup.toGeoJSON();
+    for (let i = 1; i < this.sheetLayers.length; i++) {
+      const geojsonSheet: any = this.sheetLayers[i].layerGroup.toGeoJSON();
+      sheetsGeoJson.features.push(...geojsonSheet.features);
+    }
+    if (type === 'geojson') {
+      this.download('GU-PaftaBulucu.json', JSON.stringify(sheetsGeoJson));
+    } else {
+      this.download('GU-PaftaBulucu.kml', tokml(sheetsGeoJson));
+    }
+  }
+
+  private download(filename: string, content: string) {
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   }
 
   private handleSave(): void {

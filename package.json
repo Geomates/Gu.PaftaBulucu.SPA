@@ -18,6 +18,7 @@
     "leaflet": "^1.5.1",
     "leaflet-spin": "^1.1.2",
     "popper.js": "^1.15.0",
+    "tokml": "^0.4.0",
     "vue": "2.6.11",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.4.2",
