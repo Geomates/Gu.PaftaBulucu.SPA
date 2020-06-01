@@ -236,8 +236,15 @@ export default class Map extends Vue {
       this.showLoginAlert();
       return;
     }
-    const response = await this.guRestApiClient.findSheetByCoordinate(latitude, longitude, scale);
-    this.drawSheets(response.data, scale);
+    try {
+      const response = await this.guRestApiClient.findSheetByCoordinate(latitude, longitude, scale);
+      this.drawSheets(response.data, scale);
+    } catch (exception) {
+      Notification.error({
+        title: 'Başarısız',
+        message: 'Pafta bulunamadı.',
+      });
+    }
   }
 
   private async querySheetByName(name: string): Promise<void> {
