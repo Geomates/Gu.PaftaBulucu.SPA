@@ -1,8 +1,16 @@
 <template>
   <div class="row">
     <div class="form-group col pr-1 mr-1 py-0 mb-0" style="min-width:150px;">
+        <label for="s250" class="mb-0">1:250.000</label>
+        <el-autocomplete class="inline-input" id="s250" size="small" v-model="sheet.s250" @select="handleSelect250" :fetch-suggestions="searchS250" :trigger-on-focus="false"></el-autocomplete>
+    </div>
+    <div class="form-group col px-1 mb-0 py-0 border-left" style="min-width:80px;">
         <label for="s100" class="mb-0">1:100.000</label>
-        <el-autocomplete class="inline-input" id="s100" size="small" v-model="sheet.s100" :value="sheet.s100" :fetch-suggestions="searchS100" :trigger-on-focus="false"></el-autocomplete>
+        <select id="s100" class="form-control form-control-sm" v-model="sheet.s100" :disabled="scale > 100">
+          <option v-for="option in s100values" :value="option" :key="option">
+            {{ option }}
+          </option>
+        </select>
     </div>
     <div class="form-group col px-1 mb-0 py-0 border-left">
         <label for="s50" class="mb-0">1:50.000</label>
@@ -65,7 +73,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Autocomplete } from 'element-ui';
-import sheets100 from '../../100sheets.json';
+import sheets from '../../sheets.json';
 
 @Component({
   components: {
@@ -75,7 +83,10 @@ import sheets100 from '../../100sheets.json';
 export default class FindByNameWidget extends Vue {
     @Prop() private scale!: number;
 
+    private s100values: string[] = [];
+
     private sheet: any = {
+      s250: '',
       s100: '',
       s50: '',
       s25: '',
@@ -85,13 +96,19 @@ export default class FindByNameWidget extends Vue {
       s1: '',
     };
 
-    private searchS100(queryString: string, cb: any): void {
+    private searchS250(queryString: string, cb: any): void {
       if (queryString) {
-          const result = sheets100
-                            .filter((s) => s.toLocaleLowerCase('tr').indexOf(queryString.toLocaleLowerCase('tr')) > -1)
-                            .map((s) => ({value: s}));
+          const result = sheets
+                            .filter((s) =>
+                                          s.name.toLocaleLowerCase('tr')
+                                          .indexOf(queryString.toLocaleLowerCase('tr')) > -1)
+                            .map((s) => ({value: s.name, s100s: s.s100s}));
           cb(result);
       }
+    }
+
+    private handleSelect250(selection: any) {
+      this.s100values = selection.s100s;
     }
 
     get s25values() {

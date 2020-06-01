@@ -10,6 +10,7 @@
             </div>
             <div class="card-body p-1">
               <select class="form-control" v-model.number="scale">
+                <option value="250">1:250.000</option>
                 <option value="100">1:100.000</option>
                 <option value="50">1:50.000</option>
                 <option value="25">1:25.000</option>
@@ -177,23 +178,25 @@ export default class Map extends Vue {
     eventHub.$off('open-project', this.openProject);
   }
 
-  private getScaleRange(scale: number): number {
+  private getScaleRange(scale: number): any {
     switch (scale) {
       default:
+      case 250:
+        return { lat: 1, lon: 1.5 };
       case 100:
-        return 0.5;
+        return { lat: 0.5, lon: 0.5 };
       case 50:
-        return 0.25;
+        return { lat: 0.25, lon: 0.25 };
       case 25:
-        return 0.125;
+        return { lat: 0.125, lon: 0.125 };
       case 10:
-        return 0.05;
+        return { lat: 0.05, lon: 0.05 };
       case 5:
-        return 0.025;
+        return { lat: 0.025, lon: 0.025 };
       case 2:
-        return 0.0125;
+        return { lat: 0.0125, lon: 0.0125 };
       case 1:
-        return 0.00625;
+        return { lat: 0.00625, lon: 0.00625 };
     }
   }
 
@@ -308,9 +311,9 @@ export default class Map extends Vue {
       const scaleRange = this.getScaleRange(scale);
       const corners: Array<[number, number]> = [
         [lbLat, lbLng],
-        [lbLat + scaleRange, lbLng],
-        [lbLat + scaleRange, lbLng + scaleRange],
-        [lbLat, lbLng + scaleRange],
+        [lbLat + scaleRange.lat, lbLng],
+        [lbLat + scaleRange.lat, lbLng + scaleRange.lon],
+        [lbLat, lbLng + scaleRange.lon],
         [lbLat, lbLng],
       ];
       L.polygon(corners)
@@ -325,23 +328,23 @@ export default class Map extends Vue {
         icon: this.cornerMarkerIcon,
         title: this.getSheetCornerLabel(lbLat, lbLng),
       }).addTo(layerGroup);
-      L.marker([lbLat + scaleRange, lbLng], {
+      L.marker([lbLat + scaleRange.lat, lbLng], {
         icon: this.cornerMarkerIcon,
-        title: this.getSheetCornerLabel(lbLat + scaleRange, lbLng),
+        title: this.getSheetCornerLabel(lbLat + scaleRange.lat, lbLng),
       }).addTo(layerGroup);
-      L.marker([lbLat + scaleRange, lbLng + scaleRange], {
+      L.marker([lbLat + scaleRange.lat, lbLng + scaleRange.lon], {
         icon: this.cornerMarkerIcon,
-        title: this.getSheetCornerLabel(lbLat + scaleRange, lbLng + scaleRange),
+        title: this.getSheetCornerLabel(lbLat + scaleRange.lat, lbLng + scaleRange.lon),
       }).addTo(layerGroup);
-      L.marker([lbLat, lbLng + scaleRange], {
+      L.marker([lbLat, lbLng + scaleRange.lon], {
         icon: this.cornerMarkerIcon,
-        title: this.getSheetCornerLabel(lbLat, lbLng + scaleRange),
+        title: this.getSheetCornerLabel(lbLat, lbLng + scaleRange.lon),
       }).addTo(layerGroup);
       layerGroup.addTo(this.map!);
       const sheetLayer = new SheetLayer();
       sheetLayer.sheet.name = sheet.name;
-      sheetLayer.sheet.lat = lbLat + scaleRange / 2;
-      sheetLayer.sheet.lng = lbLng + scaleRange / 2;
+      sheetLayer.sheet.lat = lbLat + scaleRange.lat / 2;
+      sheetLayer.sheet.lng = lbLng + scaleRange.lon / 2;
       sheetLayer.sheet.scale = scale;
       sheetLayer.layerGroup = layerGroup;
       this.sheetLayers.push(sheetLayer);
