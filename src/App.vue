@@ -4,13 +4,14 @@
       <img src="@/assets/small-logo.png" class="d-block mr-2"/>
       <router-link class="navbar-brand" to="/">Pafta Bulucu</router-link>
       <div class="navbar-nav">
-        <a href="#" class="nav-link" @click="showAbout = true">Hakkında</a>
-        <a href="#" class="nav-link" @click="showSettings = true" v-if="isAuthenticated">Ayarlar</a>
+        <a href="#" class="nav-link" @click="showAbout = true"><i class="fas fa-info-circle"></i> Hakkında</a>
+        <a href="https://t.me/paftabulucubot" target="blank" class="nav-link"><i class="fab fa-telegram"></i> Telegram Botu</a>        
       </div>
       <div class="navbar-nav ml-auto">
-        <a href="#" class="nav-link" @click="showProjects = true" v-if="isAuthenticated">Projeler</a>
-        <a href="#" class="nav-link" @click="authProvider.logout()" v-if="isAuthenticated">Çıkış</a>
-        <a href="#" class="nav-link" @click="login" v-if="!isAuthenticated && !isMobile">Oturum Aç</a>
+        <a href="#" class="nav-link" @click="showSettings = true" v-if="isAuthenticated"><i class="fas fa-sliders-h"></i> Ayarlar</a>
+        <a href="#" class="nav-link" @click="showProjects = true" v-if="isAuthenticated"><i class="fas fa-folder"></i> Projeler</a>
+        <a href="#" class="nav-link" @click="authProvider.logout()" v-if="isAuthenticated"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+        <a href="#" class="nav-link" @click="login" v-if="!isAuthenticated && !isMobile"><i class="fas fa-sign-in-alt"></i> Oturum Aç</a>
       </div>
     </nav>
     <div class="row justify-content-center h-100 pt-5" v-if="!isMobile">
