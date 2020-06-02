@@ -21,8 +21,8 @@
     <div class="row h-100" v-else>
       <div class="col-sm-12 my-auto text-center">
         Malesef uygulamamız mobil tarayıcılar ile uyumlu değil.<br/>
-        Uygulamamızı <b>masaüstü tarayıcılar</b> ile kullanabilirsiniz.
-        Mobil cihazlarda pafta sorgulamak için Pafta Bulucu'nun Telegram sohbet botunu kullanabilirsiniz; <a href="https://t.me/paftabulucubot">https://t.me/paftabulucubot</a>
+        Bu uygulamamızı <b>masaüstü tarayıcılar</b> ile kullanabilirsiniz.<br/>
+        Mobil cihazlarda pafta sorgulamak için Pafta Bulucu'nun Telegram sohbet botunu kullanabilirsiniz;<br/><a href="https://t.me/paftabulucubot">https://t.me/paftabulucubot</a>
       </div>
     </div>
     <ProjectsDialog :showDialog.sync="showProjects"/>
