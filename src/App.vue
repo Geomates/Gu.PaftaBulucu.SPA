@@ -5,7 +5,8 @@
       <router-link class="navbar-brand" to="/">Pafta Bulucu</router-link>
       <div class="navbar-nav">
         <a href="#" class="nav-link" @click="showAbout = true"><i class="fas fa-info-circle"></i> Hakkında</a>
-        <a href="https://t.me/paftabulucubot" target="blank" class="nav-link"><i class="fab fa-telegram"></i> Telegram Botu</a>        
+        <a href="https://t.me/paftabulucubot" target="blank" class="nav-link"><i class="fab fa-telegram"></i> Telegram Botu</a>
+        <a href="#" class="nav-link" @click="showSubscribeUs = true"><i class="fas fa-at"></i> Haberdar Olun</a>
       </div>
       <div class="navbar-nav ml-auto">
         <a href="#" class="nav-link" @click="showSettings = true" v-if="isAuthenticated"><i class="fas fa-sliders-h"></i> Ayarlar</a>
@@ -29,6 +30,7 @@
     <ProjectsDialog :showDialog.sync="showProjects"/>
     <AboutDialog :showDialog.sync="showAbout"/>
     <SettingsDialog :showDialog.sync="showSettings"/>
+    <SubscribeUsDialog :showDialog.sync="showSubscribeUs"/>
   </div>
 </template>
 
@@ -37,17 +39,19 @@ import { Component, Vue } from 'vue-property-decorator';
 import ProjectsDialog from './components/projects-dialog.vue';
 import AboutDialog from './components/about-dialog.vue';
 import SettingsDialog from './components/settings-dialog.vue';
+import SubscribeUsDialog from './components/subscribe-us-dialog.vue';
 import { eventHub } from '@/libraries/event-hub';
 import AuthProvider from '@/libraries/auth-provider';
 import { Notification } from 'element-ui';
 
 @Component({
-  components: { ProjectsDialog, AboutDialog, SettingsDialog },
+  components: { ProjectsDialog, AboutDialog, SettingsDialog, SubscribeUsDialog },
 })
 export default class App extends Vue {
   private showProjects: boolean = false;
   private showAbout: boolean = false;
   private showSettings: boolean = false;
+  private showSubscribeUs: boolean = false;
   private authProvider: AuthProvider = new AuthProvider();
   private user: any;
   private isAuthenticated: boolean = false;

@@ -39,6 +39,12 @@ export default class GuApiRestClient {
                     .get(`${config.api_base_url}/sheets/${scale}/${latitude}/${longitude}`);
     }
 
+    public async addSubscriber(emailAddress: string): Promise<any> {
+        const body = {email: emailAddress, listId: config.mailchimp_list_id};
+        return createClient()
+                    .post(`${config.gu_api_base_url}/mailchimp`, body);
+    }
+
     private async token(): Promise<string> {
         const token = await this.auth.getToken();
         return token;
