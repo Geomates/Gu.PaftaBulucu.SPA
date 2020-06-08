@@ -118,7 +118,6 @@ export default class Map extends Vue {
         maxZoom: 18,
       },
     );
-    googleLayer.addTo(this.map!);
 
     const esriLayer = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -126,7 +125,6 @@ export default class Map extends Vue {
         maxZoom: 17,
       },
     );
-    esriLayer.addTo(this.map!);
 
     const cartoLayer = L.tileLayer(
       'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png',
