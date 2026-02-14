@@ -4,7 +4,7 @@
         "clientId": "uOyRvryq7ifqkIaEzupkjSWA-XY20njJ",
         "audience": "https://api.geomatikuygulamalar.com"
     },
-    "api_base_url": "https://pb.api.geomatikuygulamalar.com",
-    "gu_api_base_url": "https://api.geomatikuygulamalar.com",
+    "api_base_url": "https://api.paftabulucu.com",
+    "gu_api_base_url": "https://api.paftabulucu.com/mc",
     "mailchimp_list_id": "13b90beb83"
 }
